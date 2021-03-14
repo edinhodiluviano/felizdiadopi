@@ -144,3 +144,8 @@ nohup.out
 
 # temporary files
 *.swp
+
+# data files
+data/*
+data/**/*
+!data/.gitkeep
