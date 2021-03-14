@@ -1,14 +1,21 @@
 import os
+import csv
 
 from . import model, config
 
 
 def save(result: model.Result):
     result_save = model.ResultSave(**result.dict())
-    line = result_save.line()
     file = filename()
+
+    new = not file.exists()
+
     with open(file, "a") as f:
-        f.write(line)
+        fieldnames = result_save.dict().keys()
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        if new:
+            writer.writeheader()
+        writer.writerow(result_save.dict())
     return file
 
 
