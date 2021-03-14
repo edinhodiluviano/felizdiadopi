@@ -8,6 +8,7 @@ license = "GPLv3"
 [tool.poetry.dependencies]
 python = "^3.9"
 fastapi = "^0.63.0"
+uvicorn = {extras = ["standard"], version = "^0.13.4"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
