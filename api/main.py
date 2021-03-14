@@ -15,6 +15,6 @@ class Result(BaseModel):
     inside: int
 
 
-@app.post("/data")
-def data(result: Result):
+@app.post("/input")
+def input(result: Result):
     return {}
