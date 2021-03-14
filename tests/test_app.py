@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -7,6 +9,12 @@ from api import main
 @pytest.fixture
 def client():
     return TestClient(main.app)
+
+
+@pytest.fixture(autouse=True)
+def mock_save():
+    with patch("api.main.save") as m:
+        yield m
 
 
 def test_basic(client):
