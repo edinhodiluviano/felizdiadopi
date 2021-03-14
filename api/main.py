@@ -14,6 +14,9 @@ class Result(BaseModel):
     size: int
     inside: int
 
+    class Config:
+        extra = "forbid"
+
 
 @app.post("/input")
 def input(result: Result):
