@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 class Result(BaseModel):
     size: int
     inside: int
+    user: str
 
     class Config:
         extra = "forbid"

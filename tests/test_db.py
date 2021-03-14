@@ -24,7 +24,7 @@ def test_config(config):
 
 
 def test_save_results(config):
-    result = api.model.Result(size=10_000_000, inside=6_000_000)
+    result = api.model.Result(size=10_000_000, inside=6_000_000, user="aaa")
     file = api.db.save(result)
     files = list(config.data.glob("*"))
     assert len(files) == 1
@@ -33,7 +33,7 @@ def test_save_results(config):
 
 def test_save_only_one_file(config):
     for size in range(1_000_000, 11_000_000, 1_000_000):
-        result = api.main.Result(size=size, inside=6_000_000)
+        result = api.main.Result(size=size, inside=6_000_000, user="aaa")
         api.db.save(result)
     files = list(config.data.glob("*"))
     assert len(files) == 1
@@ -45,12 +45,14 @@ def test_save_only_one_file(config):
 
 
 def test_save_format(config):
-    result = api.model.Result(size=10_000_000, inside=6_000_000)
+    result = api.model.Result(size=10_000_000, inside=6_000_000, user="aaa")
     file = api.db.save(result)
     with open(file) as f:
         lines = f.read()
     lines = lines.splitlines()
     d = json.loads(lines[0])
+    assert len(d) == 4
+    assert "user" in d
     assert "size" in d
     assert "inside" in d
     assert "timestamp" in d
