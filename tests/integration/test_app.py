@@ -1,6 +1,7 @@
-from fastapi.testclient import TestClient
+import itertools
 
 import pytest
+from fastapi.testclient import TestClient
 
 import api
 
@@ -25,7 +26,6 @@ def test_input(client):
     assert resp.status_code == 200
     d = resp.json()
     assert len(d) == 1
-    assert "Thank you ^.^" in d
-    msg = d["Thank you ^.^"]
-    assert isinstance(msg, str)
-    assert len(msg) > 0
+    for v in itertools.chain(d.keys(), d.values()):
+        assert isinstance(v, str)
+        assert len(v) > 0
