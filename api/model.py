@@ -14,6 +14,3 @@ class Result(BaseModel):
 
 class ResultSave(Result):
     timestamp: str = Field(default_factory=dt.datetime.utcnow)
-
-    def line(self):
-        return self.json() + "\n"
