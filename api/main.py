@@ -3,7 +3,7 @@ import random
 from fastapi import FastAPI
 
 from .model import Result
-from .db import save
+from . import db
 
 
 app = FastAPI()
@@ -16,8 +16,8 @@ def root():
 
 @app.post("/input")
 def input(result: Result):
-    save(result)
-    return {"Thank you ^.^": random_phrase}
+    db.save(result)
+    return {"Thank you ^.^": random_phrase()}
 
 
 def random_phrase():
