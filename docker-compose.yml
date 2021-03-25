@@ -1,17 +1,22 @@
 version: "3.8"
 
+
+x-common: &commons
+  mem_swappiness: 0
+  deploy:
+    resources:
+      limits:
+        memory: 600m
+
+
 services:
   proxy:
+    <<: *commons
     image: traefik:1.7.28-alpine
     container_name: proxy
     ports:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
-    deploy:
-      resources:
-        limits:
-          memory: 600m
-    mem_swappiness: 0
     command:
       - --log.level=DEBUG
       - --log.filePath=/mnt/full.log
@@ -34,19 +39,15 @@ services:
       - --certificatesresolvers.mytlschallenge.acme.storage=/letsencrypt/acme.json
 
   app:
+    <<: *commons
     build:
       context: .
     container_name: app
     image: app:1
-    mem_swappiness: 0
     depends_on:
       - proxy
     volumes:
       - "./data:/app/data:rw"
-    deploy:
-      resources:
-        limits:
-          memory: 600m
     mem_swappiness: 0
     labels:
       - traefik.enable=true
@@ -55,6 +56,6 @@ services:
       - traefik.http.routers.app.entrypoints=websecure
       - traefik.http.routers.app.tls.certresolver=mytlschallenge
       - traefik.http.routers.app.tls=true
+    ports:
+      - "8000:8000"
     entrypoint:  uvicorn api:app --host=0.0.0.0
-
-
